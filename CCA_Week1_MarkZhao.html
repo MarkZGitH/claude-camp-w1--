@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLAUDE AI 特别学习小组 — Week 1 学习任务 — Mark Zhao</title>
+<style>
+  /* ============ Apple-inspired design system ============ */
+  :root {
+    --bg: #f5f5f7;
+    --surface: #ffffff;
+    --inset: #f5f5f7;
+    --ink: #1d1d1f;
+    --ink-soft: #6e6e73;
+    --ink-muted: #86868b;
+    --accent: #0071e3;
+    --accent-hover: #0077ed;
+    --hairline: rgba(0, 0, 0, 0.08);
+
+    --code-bg: #1d1d1f;
+    --code-fg: #f5f5f7;
+    --code-comment: #7f8c8d;
+    --code-keyword: #ff7ab2;
+    --code-string: #fc6a5d;
+    --code-number: #d0bf69;
+    --code-builtin: #67b7a4;
+    --code-fn: #41a1c0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+                 "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.47;
+    letter-spacing: -0.003em;
+  }
+
+  /* ============ Hero ============ */
+  .hero {
+    text-align: center;
+    padding: 96px 24px 80px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .eyebrow {
+    font-size: 17px; font-weight: 600; color: var(--accent);
+    letter-spacing: -0.01em; margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 56px; font-weight: 700;
+    letter-spacing: -0.025em; line-height: 1.07;
+    max-width: 880px; margin: 0 auto 18px;
+  }
+  .hero .dates {
+    font-size: 21px; font-weight: 400; color: var(--ink-soft);
+    letter-spacing: -0.01em; margin-bottom: 28px;
+  }
+  .hero .author {
+    display: inline-block; padding: 8px 18px;
+    background: rgba(0,0,0,0.05); border-radius: 980px;
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  /* ============ Container ============ */
+  .container { max-width: 980px; margin: 0 auto; padding: 80px 24px 40px; }
+
+  /* ============ Script section card ============ */
+  .script {
+    background: var(--surface);
+    border-radius: 22px;
+    padding: 56px 56px 48px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.04);
+  }
+  .script-header {
+    display: flex; align-items: center; gap: 18px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .script-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    font-size: 15px; font-weight: 600; flex-shrink: 0;
+  }
+  .script h2 {
+    font-size: 32px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.15; color: var(--ink);
+  }
+  .script .desc {
+    font-size: 17px; color: var(--ink-soft);
+    margin: 6px 0 28px 54px;
+    letter-spacing: -0.01em; max-width: 720px;
+  }
+
+  /* ============ Code block ============ */
+  .code-wrap {
+    background: var(--code-bg); border-radius: 14px; overflow: hidden;
+  }
+  .code-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .code-bar .label {
+    margin-left: 12px; font-size: 12px; color: var(--ink-muted);
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.02em;
+  }
+  pre {
+    color: var(--code-fg); padding: 24px 28px 28px; overflow-x: auto;
+    font-family: "SF Mono", Menlo, Monaco, "Fira Code", Consolas, monospace;
+    font-size: 14px; line-height: 1.75; tab-size: 4;
+  }
+  .c { color: var(--code-comment); font-style: italic; }
+  .k { color: var(--code-keyword); }
+  .s { color: var(--code-string); }
+  .n { color: var(--code-number); }
+  .b { color: var(--code-builtin); }
+  .f { color: var(--code-fn); }
+  .o { color: #d0d0d0; }
+
+  /* ============ Demo (live program) ============ */
+  .demo {
+    margin-top: 24px;
+    padding: 32px;
+    background: var(--inset);
+    border-radius: 14px;
+  }
+  .demo-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .demo-tag::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .field { flex: 1 1 180px; }
+  .field label {
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .field input {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid transparent; background: #fff;
+    border-radius: 10px; font-size: 15px;
+    font-family: inherit; color: var(--ink);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .field input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(0,113,227,0.15);
+  }
+
+  /* Apple segmented control */
+  .seg {
+    display: inline-flex; background: rgba(120,120,128,0.16);
+    border-radius: 10px; padding: 2px; margin-bottom: 16px;
+  }
+  .seg button {
+    padding: 7px 18px; background: transparent; border: none;
+    border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--ink); cursor: pointer; font-family: inherit;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  .seg button.active {
+    background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 11px 22px; background: var(--accent); color: #fff;
+    border: none; border-radius: 980px;
+    font-size: 14px; font-weight: 500; font-family: inherit;
+    cursor: pointer; transition: background 0.2s ease, transform 0.15s ease;
+    letter-spacing: -0.005em;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: scale(0.97); }
+  .btn-ghost {
+    background: rgba(0,113,227,0.1); color: var(--accent);
+    padding: 7px 14px; font-size: 13px;
+  }
+  .btn-ghost:hover { background: rgba(0,113,227,0.18); }
+
+  /* Result card */
+  .result {
+    margin-top: 18px; padding: 18px 20px; background: #fff;
+    border-radius: 12px; min-height: 56px;
+    display: flex; align-items: center;
+    border: 1px solid var(--hairline);
+    font-size: 15px; color: var(--ink);
+    transition: all 0.3s ease;
+  }
+  .result.empty { color: var(--ink-muted); }
+
+  /* Tip breakdown */
+  .breakdown { display: block; width: 100%; }
+  .breakdown .line {
+    display: flex; justify-content: space-between;
+    padding: 8px 0; font-size: 15px;
+  }
+  .breakdown .line.total {
+    border-top: 1px solid var(--hairline); margin-top: 6px;
+    padding-top: 14px; font-weight: 600; font-size: 17px;
+  }
+  .breakdown .line span:last-child {
+    font-variant-numeric: tabular-nums;
+    font-family: "SF Mono", Menlo, Monaco, monospace;
+  }
+
+  /* Password display */
+  .pwd-line {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    flex-wrap: wrap;
+  }
+  .pwd-line code {
+    flex: 1; font-family: "SF Mono", Menlo, Monaco, monospace;
+    font-size: 15px; color: var(--ink); word-break: break-all;
+    background: var(--inset); padding: 10px 14px; border-radius: 8px;
+    min-width: 200px;
+  }
+
+  /* BMI display */
+  .bmi-show { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .bmi-num {
+    font-size: 44px; font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .bmi-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 980px;
+    font-size: 12px; font-weight: 600;
+  }
+  .bmi-tag.low    { background: rgba(255,149,0,0.15);  color: #b86700; }
+  .bmi-tag.normal { background: rgba(52,199,89,0.15);  color: #1f8f3a; }
+  .bmi-tag.over   { background: rgba(255,149,0,0.15);  color: #b86700; }
+  .bmi-tag.high   { background: rgba(255,59,48,0.15);  color: #c4302b; }
+  .bmi-advice { font-size: 14px; color: var(--ink-soft); }
+
+  .greet-text { font-size: 17px; line-height: 1.5; }
+  .temp-num {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ============ Footer ============ */
+  footer {
+    text-align: center; padding: 60px 24px 80px;
+    color: var(--ink-muted); font-size: 12px; letter-spacing: 0.01em;
+  }
+  footer .divider {
+    width: 40px; height: 1px; background: var(--ink-muted);
+    opacity: 0.3; margin: 0 auto 20px;
+  }
+  footer p { margin-bottom: 6px; }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 734px) {
+    .hero { padding: 64px 20px 56px; }
+    .hero h1 { font-size: 36px; }
+    .hero .dates { font-size: 17px; }
+    .container { padding: 48px 16px 24px; }
+    .script { padding: 32px 22px 28px; border-radius: 18px; }
+    .script h2 { font-size: 24px; }
+    .script .desc { margin-left: 0; font-size: 15px; }
+    pre { font-size: 12.5px; padding: 18px 20px; }
+    .demo { padding: 22px; }
+    .field { flex: 1 1 100%; }
+    .bmi-num { font-size: 36px; }
+  }
+
+  /* ============ Page-load reveal ============ */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * { animation: rise 0.8s cubic-bezier(0.2,0.8,0.2,1) both; }
+  .hero .eyebrow { animation-delay: 0.05s; }
+  .hero h1       { animation-delay: 0.15s; }
+  .hero .dates   { animation-delay: 0.25s; }
+  .hero .author  { animation-delay: 0.35s; }
+  .script { animation: rise 0.7s cubic-bezier(0.2,0.8,0.2,1) both; }
+  .script:nth-of-type(1) { animation-delay: 0.05s; }
+  .script:nth-of-type(2) { animation-delay: 0.10s; }
+  .script:nth-of-type(3) { animation-delay: 0.15s; }
+  .script:nth-of-type(4) { animation-delay: 0.20s; }
+  .script:nth-of-type(5) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">CLAUDE AI 特别学习小组</div>
+  <h1>Week 1 学习任务<br>AI Python for Beginners</h1>
+  <p class="dates">2026 年 5 月 4 日 — 5 月 9 日</p>
+  <span class="author">Mark Zhao</span>
+</header>
+
+<main class="container">
+
+  <!-- ============ Script 1: Temperature ============ -->
+  <section class="script">
+    <div class="script-header">
+      <div class="script-num">1</div>
+      <h2>温度转换器</h2>
+    </div>
+    <p class="desc">摄氏度与华氏度互换。让用户选择转换方向并输入数值，输出对应结果。</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="label">temperature_converter.py</span>
+      </div>
+<pre><code><span class="c"># 温度转换器 — 摄氏度 ↔ 华氏度</span>
+<span class="k">print</span>(<span class="s">"1: 摄氏度 → 华氏度"</span>)
+<span class="k">print</span>(<span class="s">"2: 华氏度 → 摄氏度"</span>)
+
+choice = <span class="b">input</span>(<span class="s">"请选择转换方向 (1 或 2): "</span>)
+temp   = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"请输入温度数值: "</span>))
+
+<span class="k">if</span> choice == <span class="s">"1"</span>:
+    result = temp * <span class="n">9</span> / <span class="n">5</span> + <span class="n">32</span>
+    <span class="k">print</span>(<span class="s">f"</span>{temp}<span class="s">°C  =  </span>{result}<span class="s">°F"</span>)
+<span class="k">elif</span> choice == <span class="s">"2"</span>:
+    result = (temp - <span class="n">32</span>) * <span class="n">5</span> / <span class="n">9</span>
+    <span class="k">print</span>(<span class="s">f"</span>{temp}<span class="s">°F  =  </span>{result}<span class="s">°C"</span>)
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"输入无效，请输入 1 或 2。"</span>)
+</code></pre>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tag">Live · 试一试</div>
+      <div class="seg" id="seg-temp">
+        <button data-dir="c2f" class="active">摄氏 → 华氏</button>
+        <button data-dir="f2c">华氏 → 摄氏</button>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="temp-input">温度数值</label>
+          <input type="number" id="temp-input" placeholder="例如 25" step="any">
+        </div>
+      </div>
+      <div class="result empty" id="temp-result">请输入温度数值</div>
+    </div>
+  </section>
+
+  <!-- ============ Script 2: Greeting ============ -->
+  <section class="script">
+    <div class="script-header">
+      <div class="script-num">2</div>
+      <h2>个性化问候语</h2>
+    </div>
+    <p class="desc">输入姓名和年龄，根据年龄段输出一段格式化的、个性化的问候语。</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="label">personal_greeting.py</span>
+      </div>
+<pre><code><span class="c"># 个性化问候语</span>
+name = <span class="b">input</span>(<span class="s">"请输入您的姓名: "</span>)
+age  = <span class="b">int</span>(<span class="b">input</span>(<span class="s">"请输入您的年龄: "</span>))
+
+greeting = <span class="s">f"您好, </span>{name}<span class="s">! 您今年 </span>{age}<span class="s"> 岁。"</span>
+
+<span class="k">if</span> age &lt; <span class="n">18</span>:
+    greeting += <span class="s">" 祝您学业进步！"</span>
+<span class="k">elif</span> age &lt; <span class="n">60</span>:
+    greeting += <span class="s">" 祝您工作顺利！"</span>
+<span class="k">else</span>:
+    greeting += <span class="s">" 祝您身体健康！"</span>
+
+<span class="k">print</span>(greeting)
+</code></pre>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tag">Live · 试一试</div>
+      <div class="row">
+        <div class="field">
+          <label for="greet-name">姓名</label>
+          <input type="text" id="greet-name" placeholder="Mark">
+        </div>
+        <div class="field">
+          <label for="greet-age">年龄</label>
+          <input type="number" id="greet-age" placeholder="40" min="0" max="150">
+        </div>
+      </div>
+      <button class="btn" onclick="generateGreeting()">生成问候语</button>
+      <div class="result empty" id="greet-result">输入信息后点击按钮</div>
+    </div>
+  </section>
+
+  <!-- ============ Script 3: Tip ============ -->
+  <section class="script">
+    <div class="script-header">
+      <div class="script-num">3</div>
+      <h2>小费计算器</h2>
+    </div>
+    <p class="desc">输入餐费金额和小费比例，计算并输出小费金额与最终总金额。</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="label">tip_calculator.py</span>
+      </div>
+<pre><code><span class="c"># 小费计算器</span>
+bill        = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"请输入餐费金额 (AUD): "</span>))
+tip_percent = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"请输入小费比例 (%): "</span>))
+
+tip   = bill * tip_percent / <span class="n">100</span>
+total = bill + tip
+
+<span class="k">print</span>(<span class="s">"------------------------"</span>)
+<span class="k">print</span>(<span class="s">f"餐费       : $</span>{bill<span class="o">:</span>.2f}<span class="s">"</span>)
+<span class="k">print</span>(<span class="s">f"小费 (</span>{tip_percent}<span class="s">%) : $</span>{tip<span class="o">:</span>.2f}<span class="s">"</span>)
+<span class="k">print</span>(<span class="s">f"总金额     : $</span>{total<span class="o">:</span>.2f}<span class="s">"</span>)
+</code></pre>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tag">Live · 试一试</div>
+      <div class="row">
+        <div class="field">
+          <label for="tip-bill">餐费金额 (AUD)</label>
+          <input type="number" id="tip-bill" placeholder="120.00" step="any" min="0">
+        </div>
+        <div class="field">
+          <label for="tip-pct">小费比例 (%)</label>
+          <input type="number" id="tip-pct" placeholder="15" step="any" min="0" value="10">
+        </div>
+      </div>
+      <div class="result empty" id="tip-result">输入金额后自动计算</div>
+    </div>
+  </section>
+
+  <!-- ============ Script 4: Password ============ -->
+  <section class="script">
+    <div class="script-header">
+      <div class="script-num">4</div>
+      <h2>简单密码生成器</h2>
+    </div>
+    <p class="desc">用户输入密码长度，程序基于字母、数字与符号随机生成一个安全密码。</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="label">password_generator.py</span>
+      </div>
+<pre><code><span class="c"># 简单密码生成器</span>
+<span class="k">import</span> random
+<span class="k">import</span> string
+
+length = <span class="b">int</span>(<span class="b">input</span>(<span class="s">"请输入密码长度: "</span>))
+
+characters = string.ascii_letters + string.digits + string.punctuation
+password   = <span class="s">""</span>.<span class="f">join</span>(random.<span class="f">choice</span>(characters) <span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span>(length))
+
+<span class="k">print</span>(<span class="s">f"生成的密码: </span>{password}<span class="s">"</span>)
+</code></pre>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tag">Live · 试一试</div>
+      <div class="row">
+        <div class="field" style="flex: 0 0 200px;">
+          <label for="pwd-len">密码长度 (1–64)</label>
+          <input type="number" id="pwd-len" value="16" min="1" max="64">
+        </div>
+      </div>
+      <button class="btn" onclick="genPassword()">生成密码</button>
+      <div class="result empty" id="pwd-result">点击按钮生成密码</div>
+    </div>
+  </section>
+
+  <!-- ============ Script 5: BMI ============ -->
+  <section class="script">
+    <div class="script-header">
+      <div class="script-num">5</div>
+      <h2>BMI 计算器</h2>
+    </div>
+    <p class="desc">输入身高和体重，计算 BMI 数值并根据世界卫生组织标准给出健康建议。</p>
+
+    <div class="code-wrap">
+      <div class="code-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="label">bmi_calculator.py</span>
+      </div>
+<pre><code><span class="c"># BMI 计算器</span>
+height = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"请输入身高 (米): "</span>))
+weight = <span class="b">float</span>(<span class="b">input</span>(<span class="s">"请输入体重 (公斤): "</span>))
+
+bmi = weight / (height ** <span class="n">2</span>)
+
+<span class="k">print</span>(<span class="s">f"您的 BMI 是: </span>{bmi<span class="o">:</span>.2f}<span class="s">"</span>)
+
+<span class="k">if</span> bmi &lt; <span class="n">18.5</span>:
+    <span class="k">print</span>(<span class="s">"健康建议: 体重偏轻，建议增加营养摄入。"</span>)
+<span class="k">elif</span> bmi &lt; <span class="n">24</span>:
+    <span class="k">print</span>(<span class="s">"健康建议: 体重正常，请保持健康生活方式。"</span>)
+<span class="k">elif</span> bmi &lt; <span class="n">28</span>:
+    <span class="k">print</span>(<span class="s">"健康建议: 体重超重，建议适量运动。"</span>)
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"健康建议: 肥胖，建议咨询医生制定减重计划。"</span>)
+</code></pre>
+    </div>
+
+    <div class="demo">
+      <div class="demo-tag">Live · 试一试</div>
+      <div class="row">
+        <div class="field">
+          <label for="bmi-h">身高 (米)</label>
+          <input type="number" id="bmi-h" placeholder="1.78" step="any" min="0">
+        </div>
+        <div class="field">
+          <label for="bmi-w">体重 (公斤)</label>
+          <input type="number" id="bmi-w" placeholder="72" step="any" min="0">
+        </div>
+      </div>
+      <div class="result empty" id="bmi-result">输入身高体重后自动计算</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="divider"></div>
+  <p>Designed with care · CLAUDE AI 特别学习小组</p>
+  <p>Week 1 · AI Python for Beginners · DeepLearning.AI</p>
+</footer>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // ============ 1. Temperature ============
+  let tempDir = 'c2f';
+  document.querySelectorAll('#seg-temp button').forEach(b => {
+    b.addEventListener('click', () => {
+      tempDir = b.dataset.dir;
+      document.querySelectorAll('#seg-temp button')
+        .forEach(x => x.classList.toggle('active', x === b));
+      convertTemp();
+    });
+  });
+  function convertTemp() {
+    const t = parseFloat($('temp-input').value);
+    const r = $('temp-result');
+    if (isNaN(t)) {
+      r.className = 'result empty';
+      r.textContent = '请输入温度数值';
+      return;
+    }
+    let out, label;
+    if (tempDir === 'c2f') {
+      out = (t * 9 / 5 + 32).toFixed(2);
+      label = `${t} °C  =  ${out} °F`;
+    } else {
+      out = ((t - 32) * 5 / 9).toFixed(2);
+      label = `${t} °F  =  ${out} °C`;
+    }
+    r.className = 'result';
+    r.innerHTML = `<span class="temp-num">${label}</span>`;
+  }
+  $('temp-input').addEventListener('input', convertTemp);
+
+  // ============ 2. Greeting ============
+  function generateGreeting() {
+    const name = $('greet-name').value.trim();
+    const age = parseInt($('greet-age').value);
+    const r = $('greet-result');
+    if (!name || isNaN(age)) {
+      r.className = 'result empty';
+      r.textContent = '请输入姓名和年龄';
+      return;
+    }
+    let g = `您好, ${escapeHtml(name)}! 您今年 ${age} 岁。`;
+    if (age < 18) g += ' 祝您学业进步！';
+    else if (age < 60) g += ' 祝您工作顺利！';
+    else g += ' 祝您身体健康！';
+    r.className = 'result';
+    r.innerHTML = `<span class="greet-text">${g}</span>`;
+  }
+
+  // ============ 3. Tip ============
+  function calcTip() {
+    const bill = parseFloat($('tip-bill').value);
+    const pct  = parseFloat($('tip-pct').value);
+    const r = $('tip-result');
+    if (isNaN(bill) || isNaN(pct)) {
+      r.className = 'result empty';
+      r.textContent = '输入金额后自动计算';
+      return;
+    }
+    const tip = bill * pct / 100;
+    const total = bill + tip;
+    r.className = 'result';
+    r.innerHTML = `
+      <div class="breakdown">
+        <div class="line"><span>餐费</span><span>$${bill.toFixed(2)}</span></div>
+        <div class="line"><span>小费 (${pct}%)</span><span>$${tip.toFixed(2)}</span></div>
+        <div class="line total"><span>总金额</span><span>$${total.toFixed(2)}</span></div>
+      </div>`;
+  }
+  $('tip-bill').addEventListener('input', calcTip);
+  $('tip-pct').addEventListener('input', calcTip);
+
+  // ============ 4. Password ============
+  let lastPwd = '';
+  function genPassword() {
+    const len = parseInt($('pwd-len').value);
+    const r = $('pwd-result');
+    if (isNaN(len) || len < 1 || len > 64) {
+      r.className = 'result empty';
+      r.textContent = '请输入有效长度 (1–64)';
+      return;
+    }
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' +
+                  '0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    let pwd = '';
+    const arr = new Uint32Array(len);
+    crypto.getRandomValues(arr);
+    for (let i = 0; i < len; i++) pwd += chars[arr[i] % chars.length];
+    lastPwd = pwd;
+    r.className = 'result';
+    r.innerHTML = `
+      <div class="pwd-line">
+        <code>${escapeHtml(pwd)}</code>
+        <button class="btn btn-ghost" id="copy-pwd">复制</button>
+      </div>`;
+    $('copy-pwd').addEventListener('click', copyPwd);
+  }
+  function copyPwd(e) {
+    navigator.clipboard.writeText(lastPwd).then(() => {
+      const btn = e.target;
+      btn.textContent = '已复制 ✓';
+      setTimeout(() => { btn.textContent = '复制'; }, 1500);
+    });
+  }
+
+  // ============ 5. BMI ============
+  function calcBmi() {
+    const h = parseFloat($('bmi-h').value);
+    const w = parseFloat($('bmi-w').value);
+    const r = $('bmi-result');
+    if (isNaN(h) || isNaN(w) || h <= 0 || w <= 0) {
+      r.className = 'result empty';
+      r.textContent = '输入身高体重后自动计算';
+      return;
+    }
+    const bmi = w / (h * h);
+    let advice, label, cls;
+    if (bmi < 18.5)      { label = '偏轻'; advice = '建议增加营养摄入。'; cls = 'low'; }
+    else if (bmi < 24)   { label = '正常'; advice = '请保持健康生活方式。'; cls = 'normal'; }
+    else if (bmi < 28)   { label = '超重'; advice = '建议适量运动。'; cls = 'over'; }
+    else                 { label = '肥胖'; advice = '建议咨询医生制定减重计划。'; cls = 'high'; }
+    r.className = 'result bmi-show';
+    r.innerHTML = `
+      <div class="bmi-num">${bmi.toFixed(2)}</div>
+      <div><span class="bmi-tag ${cls}">${label}</span></div>
+      <div class="bmi-advice">${advice}</div>`;
+  }
+  $('bmi-h').addEventListener('input', calcBmi);
+  $('bmi-w').addEventListener('input', calcBmi);
+</script>
+
+</body>
+</html>
